@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>考试列表</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<style>
+    .border-t,
+    .border-b{ position:relative;  }
+    .border-t:before,
+    .border-b:after{content: '';  position: absolute;  left: 0;  top:0;  background: #ddd;   right:0;    height: 1px;     -webkit-transform: scaleY(0.5);  transform: scaleY(0.5); -webkit-transform-origin: 0 0;  transform-origin: 0 0; }
+    .border-b:after{ top:auto; bottom:0;  }
+    /*.search-wrap{
+      padding: 0.8rem;
+    }
+    .search-wrap .input-select{
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .search-wrap .input-select option{
+      margin-left: 1rem;
+    }*/
+    .exam-list-wrap{
+      display: flex;
+      flex-direction: column;
+    }
+    .exam-list-wrap .exam-head-wrap{
+      padding: 0.6rem;
+      background-color: #fff;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: row;
+    }
+    .exam-list-wrap .exam-head-wrap .head-text{
+      width: 33.33%;
+      vertical-align: middle;
+      text-align: center;
+      font-weight: bold;
+    }
+    .exam-list-wrap .exam-content-wrap{
+      padding: 0.6rem;
+      background-color: #fff;
+      display: flex;
+      flex-direction: row;
+    }
+    .exam-list-wrap .exam-content-wrap .item-name{
+      width: 33.33%;
+      vertical-align: middle;
+      text-align: center;
+      font-weight: bold;
+    }
+    .exam-list-wrap .exam-content-wrap .item-text{
+      width: 33.33%;
+      vertical-align: middle;
+      text-align: center;
+    }
+    .hover{
+      opacity: .8;
+      color: #dfdfdf;
+    }
+	</style>
+</head>
+<body>
+    <section class="aui-content">
+      <!-- <div class="search-wrap">
+        <select class="input-select">
+          <option value="">选择年度查询</option>
+          <option value="">2018年</option>
+          <option value="">2017年</option>
+        </select>
+      </div> -->
+      <div class="exam-list-wrap" id="list-data">
+
+      </div>
+    </section>
+</body>
+<script id="list-data-temp" type="text/x-dot-template">
+    <div class="exam-head-wrap">
+      <span class="head-text">类型</span>
+      <span class="head-text">年份</span>
+      <span class="head-text">月份</span>
+    </div>
+    {{ for(var i=0;i<it.length;i++) { }}
+      <div onclick="fnOpenSearchScoreWin('{{=it[i].id}}')" class="exam-content-wrap border-b" tapmode="hover">
+        <span class="item-name">{{=it[i].name}}</span>
+        <span class="item-text">{{=it[i].year}}</span>
+        <span class="item-text">{{=it[i].month}}</span>
+      </div>
+    {{ } }}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/util.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+    var stuId
+
+    apiready = function(){
+        api.parseTapmode();
+        var param = api.pageParam;
+        stuId = param.stuId;
+        http("lfm/exam/searchAll", "get", {}, fnExamSearchCallBack);
+    };
+
+    function fnExamSearchCallBack(ret){
+      console.log(ret);
+      var ret = ret.exams;
+      if (ret.length>0) {
+          var temp = doT.template($api.html($api.byId("list-data-temp")));
+          $api.html($api.byId("list-data"), temp(ret));
+      }
+    }
+
+    function fnOpenSearchScoreWin(examId){
+          openWinWithParam('search_score_list_win','search_score_list_win.html',{
+            stuId:stuId,
+            examId:examId
+          });
+    }
+</script>
+</html>

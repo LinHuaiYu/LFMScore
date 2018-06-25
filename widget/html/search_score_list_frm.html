@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>考试列表</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<style>
+    .border-t,
+    .border-b{ position:relative;  }
+    .border-t:before,
+    .border-b:after{content: '';  position: absolute;  left: 0;  top:0;  background: #ddd;   right:0;    height: 1px;     -webkit-transform: scaleY(0.5);  transform: scaleY(0.5); -webkit-transform-origin: 0 0;  transform-origin: 0 0; }
+    .border-b:after{ top:auto; bottom:0;  }
+    /*.search-wrap{
+      padding: 0.8rem;
+    }
+    .search-wrap .input-select{
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .search-wrap .input-select option{
+      margin-left: 1rem;
+    }*/
+    .exam-list-wrap{
+      display: flex;
+      flex-direction: column;
+    }
+    .exam-list-wrap .exam-head-wrap{
+      padding: 0.6rem;
+      background-color: #fff;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: row;
+    }
+    .exam-list-wrap .exam-head-wrap .head-text{
+      width: 33.33%;
+      vertical-align: middle;
+      text-align: center;
+      font-weight: bold;
+    }
+    .exam-list-wrap .exam-content-wrap{
+      padding: 0.6rem;
+      background-color: #fff;
+      display: flex;
+      flex-direction: row;
+    }
+    .exam-list-wrap .exam-content-wrap .item-name{
+      width: 33.33%;
+      vertical-align: middle;
+      text-align: center;
+      font-weight: bold;
+    }
+    .exam-list-wrap .exam-content-wrap .item-text{
+      width: 50%;
+      vertical-align: middle;
+      text-align: center;
+    }
+    .exam-list-wrap .exam-content-wrap .item-text.text-red{
+      color: red;
+    }
+    .exam-list-wrap .exam-content-wrap .item-text.text-green{
+      color: green;
+    }
+    .hover{
+      opacity: .8;
+      color: #dfdfdf;
+    }
+
+	</style>
+</head>
+<body>
+    <section class="aui-content">
+      <!-- <div class="search-wrap">
+        <select class="input-select">
+          <option value="">选择年度查询</option>
+          <option value="">2018年</option>
+          <option value="">2017年</option>
+        </select>
+      </div> -->
+      <div class="exam-list-wrap"  id="list-data">
+
+      </div>
+    </section>
+</body>
+<script id="list-data-temp" type="text/x-dot-template">
+    <div class="exam-head-wrap">
+      <span class="head-text">科目</span>
+      <span class="head-text">分数</span>
+      <span class="head-text">备注</span>
+    </div>
+    {{ for(var i=0;i<it.length;i++) { }}
+      <div class="exam-content-wrap border-b" tapmode="hover">
+        <span class="item-name">{{=it[i].name}}</span>
+        {{ if(it[i].score>=60) { }}
+          <span class="item-text text-green">{{=it[i].score}}</span>
+          <span class="item-text text-red">及格</span>
+        {{ }else{ }}
+          <span class="item-text text-red">{{=it[i].score}}</span>
+          <span class="item-text text-red">不及格</span>
+        {{ } }}
+      </div>
+    {{ } }}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/util.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+
+    var sayPath = "fs://say.mp3";
+
+    apiready = function(){
+        var param = api.pageParam
+        api.parseTapmode();
+        // palyVoice('widget://res/speech.mp3');
+        fnSearchScoreList(param.stuId,param.examId);
+    };
+
+    function fnSearchScoreList(stuId,examId){
+        httpJson("lfm/score/searchByStuIdAndExamId?stuId="+stuId+"&examId="+examId,
+         "get", {}, fnSearchScoreCallBack);
+    }
+
+    function fnSearchScoreCallBack(ret){
+        var ret = ret.scores;
+        var stuName = ret[0].studentName;
+        var examName = ret[0].examName;
+        var month = ret[0].month;
+        var year = ret[0].year;
+
+        var voiceText = stuName + "在" + year + "年" + month +"月中的"+examName+"中成绩是:";
+
+        if (ret.length>0) {
+            var temp = doT.template($api.html($api.byId("list-data-temp")));
+            $api.html($api.byId("list-data"), temp(ret));
+        }
+        for(var i=0;i<ret.length;i++){
+            voiceText +=ret[i].name + ret[i].score +"分,"+ ret[i].voiceText+",";
+        }
+        console.log(voiceText);
+        http( "lfm/speech/say?say=" + voiceText, "get", {}, downloadVoiceFile);
+    }
+
+    function downloadVoiceFile(ret){
+        var url = ret.say;
+        downloadFile(url,sayPath,speechScore);
+    }
+
+    function speechScore(ret){
+        speech(ret.savePath);
+    }
+</script>
+</html>
