@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        .stu-list-wrap {
+            background-color: #fff;
+        }
+
+        .stu-list-wrap .stu-item-wrap {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            border-bottom: 1px solid #f5f5f5;
+            padding: 1rem;
+        }
+
+        .stu-list-wrap .stu-item-wrap img {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .stu-list-wrap .stu-item-wrap span {
+            font-size: 0.7rem;
+            /*font-weight: 400;*/
+            line-height: 2rem;
+            text-align: center;
+        }
+
+        .hover {
+            opacity: .8;
+            color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="aui-content aui-margin-b-15">
+        <ul class="stu-list-wrap" id="list-data">
+            <li class="stu-item-wrap" tapmode="hover">
+                <img src="../image/demo/i1.png">
+                <span>姓名:小明</span>
+                <span>年级:1</span>
+                <span>班级:1</span>
+            </li>
+
+        </ul>
+    </div>
+
+</body>
+<script id="list-data-temp" type="text/x-dot-template">
+    {{ for(var i=0;i
+    <it.length;i++) { }} <li class="stu-item-wrap" tapmode="hover" onclick="fnOpenSearchExamWin('{{=it[i].id}}')">
+        <img src="../image/demo/i1.png" >
+        <span>姓名:{{=it[i].name}}</span>
+        <span>年级:{{=it[i].grade}}</span>
+        <span>班级:{{=it[i].clas}}</span>
+        </li>
+        {{ } }}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/util.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var param = api.pageParam.ids;
+        console.log(JSON.stringify(param));
+        httpJson("lfm/student/queryByStuIds", "post", param, fnStudentList);
+    };
+
+    //查询结果的回调操作
+    function fnStudentList(ret) {
+        var ret = ret.students;
+        if (ret.length>0) {
+            var temp = doT.template($api.html($api.byId("list-data-temp")));
+            $api.html($api.byId("list-data"), temp(ret));
+        }
+    }
+
+    //打开考试查询页面
+    function fnOpenSearchExamWin(stuId){
+        openWinWithParam('search_exam_list_win','search_exam_list_win.html',{stuId:stuId});
+    }
+</script>
+
+</html>

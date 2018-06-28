@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        body {
+            background-color: #fff;
+        }
+
+        .student-from-wrap {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+        /*头部*/
+
+        .student-from-wrap .head-wrap {
+            display: flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            margin-bottom: 1.6rem;
+            margin-top: 1rem;
+        }
+
+        .student-from-wrap .head-wrap .head-text {
+            font-size: 1rem;
+            color: #03a9f4;
+        }
+        /*表单内容*/
+
+        .student-from-wrap .from-content-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .student-from-wrap .from-content-wrap .input-wrap {
+            display: flex;
+            flex-direction: column;
+            padding: 0.4rem 2rem;
+        }
+
+        .student-from-wrap .from-content-wrap .input-wrap .input-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .student-from-wrap .from-content-wrap .input-wrap .input-text {
+            border: 1px solid #03a9f4;
+            border-radius: 5px;
+            height: 1.6rem;
+            font-size: 0.5rem;
+            padding-left: 0.4rem;
+        }
+        /*查询按钮*/
+
+        .student-from-wrap .from-content-wrap .input-wrap .button-search {
+            background-color: #03a9f4;
+            color: #fff;
+            border-radius: 5px;
+            text-align: center;
+            padding: 0.3rem;
+        }
+
+        .hover {
+            opacity: .8;
+            color: #03a9f4;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="aui-content">
+        <div class="student-from-wrap">
+            <div class="head-wrap">
+                <image src="" class="head-image" />
+                <span class="head-text">学生成绩查询</span>
+            </div>
+            <div class="from-content-wrap">
+                <div class="input-wrap">
+                    <label class="input-label">年级</label>
+                    <input type="number" id="grade" class="input-text" placeholder="输入年级信息" />
+                </div>
+                <div class="input-wrap">
+                    <label class="input-label">班级</label>
+                    <input type="number" id="clas" class="input-text" placeholder="输入班级信息" />
+                </div>
+                <div class="input-wrap">
+                    <label class="input-label">姓名</label>
+                    <input type="text" id="name" class="input-text" placeholder="输入姓名信息" />
+                </div>
+                <!-- <div class="input-wrap">
+            <label class="input-label">座号</label>
+            <input type="number" class="input-text" placeholder="输入座号信息" />
+          </div> -->
+                <div class="input-wrap">
+                    <span tapmode="hover" onclick="search('detail_search_score')" class="button-search">查询</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-dialog.js"></script>
+<script type="text/javascript" src="../script/util.js"></script>
+<script type="text/javascript">
+
+    apiready = function() {
+
+    };
+
+    /*搜索功能*/
+    function search() {
+        var grade = $api.val($api.byId('grade'));
+        var clas = $api.val($api.byId('clas'));
+        var name = $api.val($api.byId('name'));
+        if (grade == "") {
+            alert("提示", "请输入年级信息");
+            return
+        }
+        if (clas == "") {
+            alert("提示", "请输入班级信息");
+            return
+        }
+        if (name == "") {
+            alert("提示", "请输入姓名信息");
+            return
+        }
+        http("lfm/student/search?name=" + name + "&grade=" + grade + "&clas=" + clas, "get", {}, searchCallBack);
+    }
+
+    function searchCallBack(ret) {
+        if (ret.code == 0) {
+            var students = ret.students;
+            if (students.length > 0) {
+                var ids = [];
+                for(var i=0;i<students.length;i++){
+                    ids.push(students[i].id);
+                }
+                openWinWithParam("search_student_list", "search_student_list_win.html", {
+                    ids:ids
+                });
+            } else {
+                alert("搜索结果", "搜索不到相关学生信息");
+            }
+        } else {
+            alert("错误", ret.msg);
+        }
+    }
+
+    function openWin(name) {
+        // api.closeWin({});
+        api.openWin({
+            name: name,
+            url: './' + name + '_win.html',
+            pageParam: {
+                // id: id
+            }
+        });
+    }
+</script>
+
+</html>

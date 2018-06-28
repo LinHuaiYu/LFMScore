@@ -8,94 +8,13 @@ var listenPath = "fs://listen.amr";
 // 机器人回复语音保存路径
 var answerPath = "fs://answer.mp3";
 
-var photoPath = "fs://scanFace.jpg";
-
-
-//toast
-function toast(msg, icon) {
-    var toast = new auiToast();
-    switch (icon) {
-        case "success":
-            toast.success({
-                title: msg,
-                duration: 2000
-            });
-            break;
-        case "fail":
-            toast.fail({
-                title: msg,
-                duration: 2000
-            });
-            break;
-        case "custom":
-            toast.custom({
-                title: "提交成功",
-                html: '<i class="aui-iconfont '+custom+'"></i>',
-                duration: 2000
-            });
-            break;
-        default:
-            break;
-    }
-}
-
-//loading
-function loading(msg) {
-    var toast = new auiToast({});
-    toast.loading({
-            title: msg,
-            duration: 2000
-        },
-        function(ret) {
-            console.log(ret);
-            setTimeout(function() {
-                toast.hide();
-            }, 5000)
-        });
-}
-
-//拍照
-function takePhoto(quality, callback) {
-    FNPhotograph.takePhoto({
-        quality: quality,
-        path: photoPath,
-        album: false
-    }, function(ret) {
-        console.log(JSON.stringify(ret));
-        callback(ret);
-    });
-}
-
-//打开相机
-// {
-//    x: 0,
-//    y: 0,
-//    w: $api.offset($api.dom('body')).w,
-//    h: $api.offset($api.dom('body')).h
-// }
-// orientation
-function openCamera(rect, orientation) {
-    FNPhotograph.openCameraView({
-        rect: rect,
-        orientation: orientation,
-        fixedOn: api.frameName,
-        fixed: true
-    }, function(ret) {
-        // console.log(JSON.stringify(ret));
-    });
-    FNPhotograph.setCamera({
-        camera: 'front'
-    });
-}
-
-//弹出框
-function alert(title, msg) {
-    var dialog = new auiDialog();
-    dialog.alert({
-        title: title,
-        msg: msg,
-        buttons: ['确定']
-    }, function(ret) {});
+function alert(title,msg){
+  var dialog = new auiDialog();
+  dialog.alert({
+      title:title,
+      msg: msg,
+      buttons:['确定']
+  },function(ret){ });
 }
 
 //关闭窗口
@@ -104,20 +23,20 @@ function closeWin() {
 }
 
 //打开窗口
-function openWin(name, url) {
-    api.openWin({
-        name: name,
-        url: url
-    });
+function openWin(name,url){
+  api.openWin({
+      name: name,
+      url: url
+  });
 }
 
 //打开窗口，携带参数
-function openWinWithParam(name, url, param) {
-    api.openWin({
-        name: name,
-        url: url,
-        pageParam: param
-    });
+function openWinWithParam(name,url,param){
+  api.openWin({
+      name: name,
+      url: url,
+      pageParam: param
+  });
 }
 
 //拍照
@@ -174,7 +93,7 @@ function http(url, method, data, callback) {
         url: domain + url,
         method: method,
         data: {
-            values: data
+          values: data
         }
     }, function(ret, err) {
         if (ret) {
@@ -216,10 +135,9 @@ function speech(path) {
 
 //上传文件
 function upload(url, filePath, callback) {
-    console.log("upload");
     // 提交JSON数据
     api.ajax({
-        url: domain + url,
+        url: url,
         method: 'post',
         data: {
             files: {
@@ -227,13 +145,10 @@ function upload(url, filePath, callback) {
             }
         }
     }, function(ret, err) {
-        console.log(JSON.stringify(ret));
-        console.log(JSON.stringify(err));
         if (ret) {
             // api.alert({
             //     msg: JSON.stringify(ret)
             // });
-            console.log(JSON.stringify(ret));
             callback(ret);
         } else {
             // api.alert({
