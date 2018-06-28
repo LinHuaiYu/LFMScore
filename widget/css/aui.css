@@ -424,7 +424,7 @@ img {
     left: 0;
     background: rgba(0, 0, 0, 0.3);
     opacity: 0;
-    z-index: 99;
+    z-index: 8;
     visibility: hidden;
     -webkit-transition: opacity .3s,-webkit-transform .3s;
     transition: opacity .3s,transform .3s;
@@ -460,7 +460,7 @@ img.aui-img-round {
 	margin-left: -0.125rem;
 	margin-right: -0.125rem;
 }
-.aui-row-padded [class*=aui-col-] {
+.aui-row-padded [class*=aui-col-xs-] {
 	padding: 0.125rem;
 }
 .aui-col-xs-1,.aui-col-xs-2,.aui-col-xs-3,.aui-col-xs-4,.aui-col-xs-5,.aui-col-xs-6,.aui-col-xs-7,.aui-col-xs-8,.aui-col-xs-9,.aui-col-xs-10,.aui-col-xs-11,.aui-col-5 {
@@ -510,7 +510,7 @@ img.aui-img-round {
 /*标签*/
 .aui-label {
 	display: inline-block;
-	padding: 0.2rem 0.25rem;
+	padding: 0.2em 0.25em;
 	font-size: 0.6rem;
 	line-height: 1;
 	color: #616161;
@@ -518,7 +518,7 @@ img.aui-img-round {
 	text-align: center;
 	white-space: nowrap;
 	vertical-align: middle;
-	border-radius: 0.15rem;
+	border-radius: 0.15em;
 	position: relative;
 }
 
@@ -1922,22 +1922,22 @@ input[type="search"]::-webkit-search-cancel-button {
 	border-radius: 0.25rem;
 	color: #ffffff;
 	position: fixed;
-	z-index: 3;
+	z-index: 99999999;
 	top: 45%;
 	left: 50%;
 	width: 7.5em;
-	padding: 0.5rem;
+	min-height: 6em;
 	margin-left: -3.75em;
 	margin-top: -4rem;
 	display: none;
 }
 .aui-toast .aui-iconfont {
+	margin-top: 0.2rem;
 	display: block;
 	font-size: 2.6rem;
 }
 .aui-toast-content {
-	font-size: 0.7rem;
-  /*margin: 0 0 0.75rem;*/
+  margin: 0 0 0.75rem;
 }
 .aui-toast-loading {
     background-color: #ffffff;
@@ -2301,41 +2301,6 @@ input[type="search"]::-webkit-search-cancel-button {
     display: block;
     transform: rotate(180deg);
     -webkit-transform: rotate(180deg);
-}
-.aui-comment-box {
-    background-color: #f6f6f6;
-    margin-bottom: 0;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 999;
-    opacity: 0;
-    -webkit-transition: opacity .3s,-webkit-transform .3s;
-    transition: opacity .3s,transform .3s;
-    -webkit-transform: translate3d(0,100%,0);
-    transform: translate3d(0,100%,0);
-    padding: 0.5rem;
-}
-.aui-comment-box .aui-card-list-content {
-    padding: 0;
-}
-.aui-comment-box textarea {
-    background: #ffffff;
-    height: 4.5rem;
-    padding: 0.25rem;
-    border: 1px solid #eee;
-}
-.aui-comment-box .aui-card-list-header {
-	padding: 0;
-}
-.aui-comment-box .aui-card-list-footer {
-    padding: 0;
-    min-height: 1 !important;
-}
-.aui-comment-box .aui-comment-box-confirm.aui-active {
-    background-color: #03a9f4 !important;
-    color: #ffffff;
 }
 /*聊天气泡*/
 .aui-chat {

@@ -33,15 +33,14 @@
                         if(!self.params.repeatClick){
                             if(this.className.indexOf("aui-active") > -1)return;
                         }
-                        if(this.parentNode.querySelector(".aui-active"))this.parentNode.querySelector(".aui-active").classList.remove("aui-active");
-                        this.classList.add("aui-active");
         				if(callback){
                             callback({
                                 index: parseInt(this.getAttribute("data-item-order"))+1,
                                 dom:this
                             })
                         };
-
+        				this.parentNode.querySelector(".aui-active").classList.remove("aui-active");
+            			this.classList.add("aui-active");
         			}
         		}
         	}

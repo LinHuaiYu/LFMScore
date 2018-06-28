@@ -64,13 +64,15 @@
         {{ } }}
 </script>
 <script type="text/javascript" src="../script/api.js"></script>
-<script type="text/javascript" src="../script/util.js"></script>
 <script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js" ></script>
+<script type="text/javascript" src="../script/aui-dialog.js"></script>
+<script type="text/javascript" src="../script/util.js"></script>
 <script type="text/javascript">
     apiready = function() {
         var param = api.pageParam.ids;
         console.log(JSON.stringify(param));
-        httpJson("lfm/student/search", "post", param, fnStudentList);
+        httpJson("lfm/student/queryByStuIds", "post", param, fnStudentList);
     };
 
     //查询结果的回调操作

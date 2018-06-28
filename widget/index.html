@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-    <title>index</title>
+    <title>首页</title>
     <link rel="stylesheet" type="text/css" href="./css/api.css" />
     <link rel="stylesheet" type="text/css" href="./css/style.css" />
     <style>
@@ -33,8 +33,11 @@
 
 </html>
 <script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/aui-toast.js" ></script>
+<script type="text/javascript" src="./script/aui-dialog.js"></script>
 <script type="text/javascript" src="./script/util.js"></script>
 <script type="text/javascript">
+
     var welcomeText = "你好,我是小云";
     var welcomePath = "fs://welcome.mp3";
 
@@ -70,9 +73,7 @@
 
     //播放语音
     function speechWelcome(ret) {
-        // speech(ret.savePath);
-        // listenAndAnswer();
+        speech(ret.savePath);
     }
-
 
 </script>

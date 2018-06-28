@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        body {}
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js" ></script>
+<script type="text/javascript" src="../script/aui-dialog.js"></script>
+<script type="text/javascript" src="../script/util.js"></script>
+<script type="text/javascript">
+    var FNPhotograph;
+
+    apiready = function() {
+        FNPhotograph = api.require('FNPhotograph');
+        openCamera({
+            x: 0,
+            y: 0,
+            w: api.winWidth,
+            h: api.winHeight
+        }, "orientation");
+        scanFace();
+        api.addEventListener({
+            name:'viewappear'
+        }, function(ret, err){
+           console.log("window显示");
+           scanFace();
+        });
+    };
+
+    //执行扫描脸部识别功能
+    function scanFace(){
+        setTimeout(function(){
+          takePhoto("low",takePhotoCallback);
+        },2000);
+        //定时扫描人脸
+        // self.setInterval(function(){
+        //     clearInterval();
+        //     takePhoto("medium",takePhotoCallback);
+        // },3000);
+
+    }
+
+    function takePhotoCallback(ret){
+        //拍照成功后回调(上传图片识别)
+        //返回拍照成功结果后取消定时
+        console.log("takePhotoCallback");
+        upload("lfm/face/searchByFile",ret.imagePath,uploadCallBack);
+    }
+
+    //上传图片识别后回调
+    function uploadCallBack(ret){
+        if(ret.code==0){
+            openWinWithParam('search_student_list_win','search_student_list_win.html',{
+                ids:ret.ids
+            });
+        }else if(ret.code==222202){
+            loading("未识别到人脸");
+            scanFace();
+            return
+        }else{
+            toast(ret.msg,"aui-icon-lock");
+            scanFace();
+        }
+    }
+</script>
+
+</html>

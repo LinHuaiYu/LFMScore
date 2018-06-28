@@ -1,13 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css" />
     <style>
-
+        body {}
     </style>
 </head>
 
@@ -16,29 +16,27 @@
         <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
             <span class="aui-iconfont aui-icon-left"></span>
         </a>
-        <div class="aui-title">学生列表</div>
+        <div class="aui-title">人脸识别</div>
     </header>
-    <!-- <footer class="aui-bar aui-bar-tab" id="footer">
-        <div class="aui-bar-tab-item aui-padded-l-15 aui-padded-r-15">
-            <div class="aui-btn aui-btn-block aui-btn-sm aui-btn-info"><i class="aui-iconfont aui-icon-plus aui-font-size-16"></i>新增地址</div>
-        </div>
-    </footer> -->
+
+
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/aui-toast.js" ></script>
 <script type="text/javascript" src="../script/aui-dialog.js"></script>
 <script type="text/javascript" src="../script/util.js"></script>
 <script type="text/javascript">
+
+    // var FNPhotograph;
+
     apiready = function() {
         api.parseTapmode();
         var header = $api.byId('aui-header');
         $api.fixStatusBar(header);
         var headerPos = $api.offset(header);
-        var body_h = $api.offset($api.dom('body')).h;
-        // var footerH = $api.offset($api.byId('footer')).h;
         api.openFrame({
-            name: 'search_student_list_frm',
-            url: 'search_student_list_frm.html',
+            name: 'face_scan_frm',
+            url: 'face_scan_frm.html',
             bounces: true,
             rect: {
                 x: 0,
@@ -47,13 +45,17 @@
                 // h: api.winHeight-headerPos.h-footerH
                 h: api.winHeight - headerPos.h
             },
-            pageParam : api.pageParam
+            pageParam: api.pageParam
         })
+        // FNPhotograph = api.require('FNPhotograph');
+        // openCamera({
+        //     x: 0,
+        //     y: headerPos.h,
+        //     w: $api.offset($api.dom('body')).w,
+        //     h: $api.offset($api.dom('body')).h
+        // }, "orientation");
     };
 
-    function closeWin() {
-        api.closeWin({});
-    }
 </script>
 
 </html>
